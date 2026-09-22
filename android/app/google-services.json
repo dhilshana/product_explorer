@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39686938397",
+    "project_id": "product-explorer-f2168",
+    "storage_bucket": "product-explorer-f2168.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39686938397:android:e84bfdb5832afcfe8e0bf4",
+        "android_client_info": {
+          "package_name": "com.example.product_explorer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWcQGNxFcZwkFGkZbT8ugQ6dkBB2FcqmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
