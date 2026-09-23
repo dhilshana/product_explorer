@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:product_explorer/core/error/app_exception.dart';
+import 'package:product_explorer/data/models/user_model.dart';
 import 'package:product_explorer/data/repositories/auth_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -13,6 +14,7 @@ class AuthViewModel extends ChangeNotifier {
   String? _errorMessage;
 
   User? get user => _user;
+  UserModel? get currentUserModel => _user != null ? UserModel.fromFirebaseUser(_user!) : null;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _user != null;

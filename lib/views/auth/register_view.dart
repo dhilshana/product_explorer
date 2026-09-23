@@ -27,7 +27,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
