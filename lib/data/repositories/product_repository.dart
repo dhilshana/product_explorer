@@ -9,10 +9,9 @@ class ProductRepository {
   ProductRepository({ApiClient? apiClient})
       : _apiClient = apiClient ?? ApiClient();
 
-  Future<List<ProductModel>> getProducts({int limit = 30, int skip = 0}) async {
+  Future<List<ProductModel>> getProducts() async {
     final response = await _apiClient.get(
       ApiConstants.productsEndpoint,
-      queryParams: {'limit': limit, 'skip': skip},
     );
 
     if (response is Map<String, dynamic> && response['products'] is List) {
@@ -23,5 +22,34 @@ class ProductRepository {
     }
 
     throw ServerException('Invalid product list response format.');
+  }
+
+  Future<List<String>> getCategories() async {
+    final response = await _apiClient.get(ApiConstants.categoryListEndpoint);
+
+    if (response is List) {
+      return response.map((e) => e.toString()).toList();
+    }
+
+    return [];
+  }
+
+  Future<List<ProductModel>> searchProducts(String query) async {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) return [];
+
+    final response = await _apiClient.get(
+      ApiConstants.searchEndpoint,
+      queryParams: {'q': trimmed},
+    );
+
+    if (response is Map<String, dynamic> && response['products'] is List) {
+      final list = response['products'] as List;
+      return list
+          .map((item) => ProductModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    }
+
+    throw ServerException('Invalid search response format.');
   }
 }

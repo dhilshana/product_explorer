@@ -1,58 +1,48 @@
-import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:product_explorer/core/error/app_exception.dart';
-import 'package:product_explorer/data/models/user_model.dart';
 import 'package:product_explorer/data/repositories/auth_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final AuthRepository _repository;
-  StreamSubscription<User?>? _authSubscription;
+  final AuthRepository repository;
 
-  User? _user;
-  bool _isLoading = false;
-  String? _errorMessage;
-
-  User? get user => _user;
-  UserModel? get currentUserModel => _user != null ? UserModel.fromFirebaseUser(_user!) : null;
-  bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
-  bool get isAuthenticated => _user != null;
+  User? user;
+  bool isLoading = false;
+  String? errorMessage;
 
   AuthViewModel({AuthRepository? repository})
-      : _repository = repository ?? AuthRepository() {
-    _user = _repository.currentUser;
-    _authSubscription = _repository.authStateChanges.listen((User? user) {
-      _user = user;
-      notifyListeners();
-    });
+      : repository = repository ?? AuthRepository() {
+    user = this.repository.currentUser;
   }
+
+  bool get isAuthenticated => user != null;
 
   Future<bool> signUp({
     required String email,
     required String password,
     String? name,
   }) async {
-    _setLoading(true);
-    _clearError();
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
     try {
-      final user = await _repository.signUp(
+      user = await repository.signUp(
         email: email,
         password: password,
         displayName: name,
       );
-      _user = user;
-      notifyListeners();
+
       return true;
     } on AppException catch (e) {
-      _errorMessage = e.message;
+      errorMessage = e.message;
       return false;
     } catch (e) {
-      _errorMessage = 'An unexpected error occurred. Please try again.';
+      errorMessage = 'An unexpected error occurred. Please try again.';
       return false;
     } finally {
-      _setLoading(false);
+      isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -60,57 +50,47 @@ class AuthViewModel extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    _setLoading(true);
-    _clearError();
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
     try {
-      final user = await _repository.login(
+      user = await repository.login(
         email: email,
         password: password,
       );
-      _user = user;
-      notifyListeners();
+
       return true;
     } on AppException catch (e) {
-      _errorMessage = e.message;
+      errorMessage = e.message;
       return false;
     } catch (e) {
-      _errorMessage = 'An unexpected error occurred. Please try again.';
+      errorMessage = 'An unexpected error occurred. Please try again.';
       return false;
     } finally {
-      _setLoading(false);
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> logout() async {
-    _setLoading(true);
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
     try {
-      await _repository.logout();
-      _user = null;
+      await repository.logout();
+      user = null;
     } catch (e) {
-      _errorMessage = 'Failed to sign out.';
+      errorMessage = 'Failed to sign out.';
     } finally {
-      _setLoading(false);
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   void clearError() {
-    _errorMessage = null;
+    errorMessage = null;
     notifyListeners();
-  }
-
-  void _clearError() {
-    _errorMessage = null;
-  }
-
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    _authSubscription?.cancel();
-    super.dispose();
   }
 }

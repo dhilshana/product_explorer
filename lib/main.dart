@@ -5,6 +5,7 @@ import 'package:product_explorer/core/utils/responsive.dart';
 import 'package:product_explorer/viewmodels/app_providers.dart';
 import 'package:product_explorer/viewmodels/theme_viewmodel.dart';
 import 'package:product_explorer/views/auth/auth_wrapper.dart';
+import 'package:product_explorer/views/main_nav/main_nav_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,7 @@ late AppColorScheme appColors;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Firebase
   try {
     await Firebase.initializeApp();
   } catch (e) {
@@ -78,11 +80,7 @@ class MainApp extends StatelessWidget {
         return child!;
       },
       home: const AuthWrapper(
-        homeView: Scaffold(
-          body: Center(
-            child: Text('Home View Placeholder'),
-          ),
-        ),
+        homeView: MainNavView(),
       ),
     );
   }
