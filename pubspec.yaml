@@ -7,11 +7,13 @@ environment:
   sdk: ^3.13.2
 
 dependencies:
-  cloud_firestore: ^6.10.0
   firebase_auth: ^6.7.0
   firebase_core: ^4.15.0
   flutter:
     sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  http: ^1.2.2
   provider: ^6.1.5+1
   shared_preferences: ^2.5.5
 
@@ -23,4 +25,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets\icons\google_icon.png
+    - assets/icons/google_icon.png
