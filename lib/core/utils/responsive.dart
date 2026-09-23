@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Responsive {
-  static late double _screenWidth;
-  static late double _screenHeight;
+  static double _screenWidth = 392.7;
+  static double _screenHeight = 805.09;
 
-  // Base design size (your design reference)
+  // Base design size (design reference)
   static const double _baseWidth = 392.7;
   static const double _baseHeight = 805.09;
 
@@ -24,7 +24,7 @@ class Responsive {
     return value * (_screenHeight / _baseHeight);
   }
 
-  /// Font scaling (recommended)
+  /// Font scaling
   static double font(double size) {
     return width(size);
   }
